@@ -57,15 +57,31 @@ const App = () => {
     </form>
   )
 
+  const userLogged = () => (
+    <div>
+      {user.name} log-in
+    </div>
+  )
+
   return (
     <div>
+      {user ?
+      <>
+        {userLogged()}
+        <h2>blogs</h2>
+        {user && 
+        (blogs.map(blog =>
+          <Blog key={blog.id} blog={blog} />
+        ))
+        }
+      </>
+      :
+      <>
+      <h2>log in to application</h2>
       {login()}
-      <h2>blogs</h2>
-      {user && 
-      (blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
-      ))
+      </>  
       }
+      
     </div>
   )
 }
