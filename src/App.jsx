@@ -21,13 +21,20 @@ const App = () => {
     
   }, [user])//actualiza el estado blogs cuando el user cambia
   
+  useEffect(() => {
+    const data = JSON.parse(window.localStorage.getItem('user'))
+    if(data){
+      setUser(data)
+      blogService.setToken(data.token) //establece otra vez el token
+    }
+  }, [])
   const handleLogin = async (event) => {
     event.preventDefault()
     try{
         const response = await loginService.login(username, password)
         blogService.setToken(response.token)
         setUser(response)
-        
+        window.localStorage.setItem('user', JSON.stringify(response))
     }catch (error){
         console.error(error.message)
     }
@@ -63,13 +70,25 @@ const App = () => {
     </div>
   )
 
+  const logOut = () => {
+    setUsername(null)
+    setPassword(null)
+    setBlogs(null)
+    setUser(null)
+    blogService.setToken(null)    
+    window.localStorage.removeItem('user')
+  }
+
   return (
     <div>
       {user ?
       <>
         {userLogged()}
+        <button onClick={logOut}>
+          log out
+        </button>
         <h2>blogs</h2>
-        {user && 
+        {blogs && 
         (blogs.map(blog =>
           <Blog key={blog.id} blog={blog} />
         ))
