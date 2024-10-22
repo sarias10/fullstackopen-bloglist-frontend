@@ -1,23 +1,27 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 import Message from './components/Message'
+import Togglable from './components/Togglable'
 
 const App = () => {
-  const [username, setUsername] = useState(null)
-  const [password, setPassword] =useState(null)
+  const [username, setUsername] = useState('')
+  const [password, setPassword] =useState('')
   const [user, setUser] = useState(null)
   const [blogs, setBlogs] = useState([])
   //create new Blog
-  const [title, setTitle] = useState(null)
-  const [author, setAuthor] = useState(null)
-  const [url, setUrl] = useState(null)
+  const [title, setTitle] = useState('')//si dejo esto null da error, creo que porque al enviar datos, se envian nulos
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
+  const [visibilityNewBlog, setVisibilityNewBlog] =useState(null)
   //message
   const [message, setMessage] = useState(
     {message: 'Mensaje de prueba...',
     error: false
   })
+  //refs
+  const blogFormRef = useRef()//se utiliza para crear una referencia blogFormRef, que se asigna al componente togglable para poder usar las funciones definidas y (permitidas) dentro del componente padre 
 
   useEffect(() => {
     //si el user existe entonces se obtienen todos los blogs
@@ -61,6 +65,7 @@ const App = () => {
   const handleCreateNewBlog = async (event) => {
     event.preventDefault()
     try{
+        blogFormRef.current.toggleVisibility()
         const response = await blogService.createBlog({
           title: title,
           author: author,
@@ -68,9 +73,9 @@ const App = () => {
         })
         const newBlogs = blogs.concat(response.data);
         setBlogs(newBlogs)
-        setTitle(null)
-        setAuthor(null)
-        setUrl(null)
+        setTitle('')
+        setAuthor('')
+        setUrl('')
         setMessage({message: `a new blog ${response.data.title} by ${response.data.author} added`, error: false})
         setTimeout(() => {
           setMessage(null)
@@ -138,6 +143,12 @@ const App = () => {
     </form>
   )
 
+  const showCreateBlogForm = () => (
+    <Togglable buttonLabel={'newNote'} ref={blogFormRef}>{/*se pasa blogFormRef como referencia*/}
+      {createNewBlog()}
+    </Togglable>
+  )
+
   const userLogged = () => (
     <div>
       {user.name} log-in
@@ -165,7 +176,7 @@ const App = () => {
           log out
         </button>
         <h2>create new</h2>
-        {createNewBlog()}
+        {showCreateBlogForm()}
         <h2>blogs list created by {user.name}</h2>
         {blogs && 
         (blogs.map(blog =>
