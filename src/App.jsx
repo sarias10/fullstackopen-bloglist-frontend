@@ -4,17 +4,13 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 import Message from './components/Message'
 import Togglable from './components/Togglable'
+import BlogForm from './components/BlogForm'
 
 const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] =useState('')
   const [user, setUser] = useState(null)
   const [blogs, setBlogs] = useState([])
-  //create new Blog
-  const [title, setTitle] = useState('')//si dejo esto null da error, creo que porque al enviar datos, se envian nulos
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
-  const [visibilityNewBlog, setVisibilityNewBlog] =useState(null)
   //message
   const [message, setMessage] = useState(
     {message: 'Mensaje de prueba...',
@@ -22,7 +18,7 @@ const App = () => {
   })
   //refs
   const blogFormRef = useRef()//se utiliza para crear una referencia blogFormRef, que se asigna al componente togglable para poder usar las funciones definidas y (permitidas) dentro del componente padre 
-
+  
   useEffect(() => {
     //si el user existe entonces se obtienen todos los blogs
     const fetchBlogs = async () =>{
@@ -62,30 +58,6 @@ const App = () => {
     }
   }
 
-  const handleCreateNewBlog = async (event) => {
-    event.preventDefault()
-    try{
-        blogFormRef.current.toggleVisibility()
-        const response = await blogService.createBlog({
-          title: title,
-          author: author,
-          url: url
-        })
-        const newBlogs = blogs.concat(response.data);
-        setBlogs(newBlogs)
-        setTitle('')
-        setAuthor('')
-        setUrl('')
-        setMessage({message: `a new blog ${response.data.title} by ${response.data.author} added`, error: false})
-        setTimeout(() => {
-          setMessage(null)
-        }, 5000)
-    }catch (error){
-        console.error(error.message)
-    }
-  }
-
-
   const login = () => (
     <form onSubmit={handleLogin}>
         <div>
@@ -110,42 +82,9 @@ const App = () => {
     </form>
   )
 
-  const createNewBlog = () => (
-    <form onSubmit={handleCreateNewBlog}>
-        <div>
-            title
-            <input
-            type="text"
-            value={title}
-            name="Title"
-            onChange={({ target }) => setTitle(target.value)}
-            />
-        </div>
-        <div>
-            author
-            <input
-            type="text"
-            value={author}
-            name="Author"
-            onChange={({ target }) => setAuthor(target.value)}
-            />
-        </div>
-        <div>
-            url
-            <input
-            type="text"
-            value={url}
-            name="Url"
-            onChange={({ target }) => setUrl(target.value)}
-            />
-        </div>
-        <button type="submit">create</button>
-    </form>
-  )
-
   const showCreateBlogForm = () => (
     <Togglable buttonLabel={'newNote'} ref={blogFormRef}>{/*se pasa blogFormRef como referencia*/}
-      {createNewBlog()}
+      <BlogForm createNewBlog={handleCreateNewBlog}/>
     </Togglable>
   )
 
@@ -162,6 +101,21 @@ const App = () => {
     setUser(null)
     blogService.setToken(null)    
     window.localStorage.removeItem('user')
+  }
+
+  const handleCreateNewBlog = async (newBlog) => {
+    try{
+        blogFormRef.current.toggleVisibility()//llamo a la funcion toggleVisibility antes declarada para usar con ref para ocultar el formulario
+        const response = await blogService.createBlog(newBlog) //peticion que crea el blog
+        const newBlogs = blogs.concat(response.data);//crea una nueva variable y concatena el estado existente al nuevo blog creado
+        setBlogs(newBlogs)//actualiza el estado blogs
+        setMessage({message: `a new blog ${response.data.title} by ${response.data.author} added`, error: false})
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
+    }catch (error){
+        console.error(error.message)
+    }
   }
 
   return (
