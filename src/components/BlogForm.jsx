@@ -6,8 +6,8 @@ const BlogForm = ({createNewBlog}) => {
     const [url, setUrl] = useState('')
 
     const addNewBlog = (event) => {
-        event.preventDefault()
-        createNewBlog({
+        event.preventDefault()//evita que se recargue el componente
+        createNewBlog({//le pasa un objeto a la funcion que se paso como propiedad
             title: title,
             author: author,
             url: url

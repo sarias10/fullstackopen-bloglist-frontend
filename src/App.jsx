@@ -85,18 +85,18 @@ const App = () => {
   const handleCreateNewBlog = async (newBlog) => {
     try{
         blogFormRef.current.toggleVisibility()//llamo a la funcion toggleVisibility antes declarada para usar con ref para ocultar el formulario
-        const response = await blogService.createBlog(newBlog) //peticion que crea el blog
+        const response = await blogService.createBlog(newBlog) //peticion que crea el blog con el objeto pasado desde el componente BlogForm
         const newBlogs = blogs.concat(response.data);//crea una nueva variable y concatena el estado existente al nuevo blog creado
         setBlogs(newBlogs)//actualiza el estado blogs
         setMessage({message: `a new blog ${response.data.title} by ${response.data.author} added`, error: false})
-        setTimeout(() => {
-          setMessage(null)
+        setTimeout(() => {//esta funcion se ejecutara despues de 5 segundos
+          setMessage(null)//es decir, el estado setMessage quedara nulo despues de 5 segundos de mostrar el mensaje
         }, 5000)
     }catch (error){
         console.error(error.message)
     }
   }
-  
+
   const showCreateBlogForm = () => (
     <Togglable buttonLabel={'newNote'} ref={blogFormRef}>{/*se pasa blogFormRef como referencia*/}
       <BlogForm createNewBlog={handleCreateNewBlog}/>
