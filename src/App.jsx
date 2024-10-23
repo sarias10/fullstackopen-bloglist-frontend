@@ -82,6 +82,21 @@ const App = () => {
     </form>
   )
 
+  const handleCreateNewBlog = async (newBlog) => {
+    try{
+        blogFormRef.current.toggleVisibility()//llamo a la funcion toggleVisibility antes declarada para usar con ref para ocultar el formulario
+        const response = await blogService.createBlog(newBlog) //peticion que crea el blog
+        const newBlogs = blogs.concat(response.data);//crea una nueva variable y concatena el estado existente al nuevo blog creado
+        setBlogs(newBlogs)//actualiza el estado blogs
+        setMessage({message: `a new blog ${response.data.title} by ${response.data.author} added`, error: false})
+        setTimeout(() => {
+          setMessage(null)
+        }, 5000)
+    }catch (error){
+        console.error(error.message)
+    }
+  }
+  
   const showCreateBlogForm = () => (
     <Togglable buttonLabel={'newNote'} ref={blogFormRef}>{/*se pasa blogFormRef como referencia*/}
       <BlogForm createNewBlog={handleCreateNewBlog}/>
@@ -101,21 +116,6 @@ const App = () => {
     setUser(null)
     blogService.setToken(null)    
     window.localStorage.removeItem('user')
-  }
-
-  const handleCreateNewBlog = async (newBlog) => {
-    try{
-        blogFormRef.current.toggleVisibility()//llamo a la funcion toggleVisibility antes declarada para usar con ref para ocultar el formulario
-        const response = await blogService.createBlog(newBlog) //peticion que crea el blog
-        const newBlogs = blogs.concat(response.data);//crea una nueva variable y concatena el estado existente al nuevo blog creado
-        setBlogs(newBlogs)//actualiza el estado blogs
-        setMessage({message: `a new blog ${response.data.title} by ${response.data.author} added`, error: false})
-        setTimeout(() => {
-          setMessage(null)
-        }, 5000)
-    }catch (error){
-        console.error(error.message)
-    }
   }
 
   return (
