@@ -5,6 +5,7 @@ import loginService from './services/login'
 import Message from './components/Message'
 import Togglable from './components/Togglable'
 import BlogForm from './components/BlogForm'
+import { compareFn } from './utils'
 
 const App = () => {
   const [username, setUsername] = useState('')
@@ -24,7 +25,8 @@ const App = () => {
     const fetchBlogs = async () =>{
       if(user){
         const response = await blogService.getAll()
-        setBlogs(response)
+        const orderedList = compareFn(response)
+        setBlogs(orderedList)
       }
     }
     fetchBlogs()

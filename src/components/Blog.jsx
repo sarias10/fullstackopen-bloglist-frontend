@@ -1,6 +1,7 @@
 import { useState } from "react"
 import blogService from "../services/blogs"
 import blogs from "../services/blogs"
+import { compareFn } from "../utils"
 
 const Blog = ({ blog, name, blogs,setBlogs }) => {
   const [showDetails, setShowDetails] =useState(false)
