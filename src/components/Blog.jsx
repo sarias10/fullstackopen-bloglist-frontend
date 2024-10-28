@@ -25,7 +25,7 @@ const Blog = ({ blog, name, blogs,setBlogs }) => {
       likes: blog.likes + 1
     }
     const response = await blogService.updateBlog(blog.id, updateBlog)
-    
+    //obtiene la lista de blogs como prop en el componente y actualiza los likes solo del blog con el mismo id
     const allBlogs = blogs.map(item => {
       if(item.id === blog.id){
         item.likes = response.data.likes
