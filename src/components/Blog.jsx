@@ -1,7 +1,7 @@
-import { useState } from "react"
-import blogService from "../services/blogs"
-import blogs from "../services/blogs"
-import { compareFn } from "../utils"
+import { useState } from 'react'
+import blogService from '../services/blogs'
+import blogs from '../services/blogs'
+import { compareFn } from '../utils'
 
 const Blog = ({ blog, name, blogs,setBlogs }) => {
   const [showDetails, setShowDetails] =useState(false)
@@ -48,22 +48,22 @@ const Blog = ({ blog, name, blogs,setBlogs }) => {
   }
 
   return(
-  <div style={blogStyle}>
-    {blog.title} {blog.author} <button onClick={controlShowDetails}>view</button>
-    {showDetails && 
-    <div>
-    {blog.id}
-    <br/>
-    {blog.url}
-    <br/>
-    likes {blog.likes} <button onClick={handleLikes}>like</button>
-    <br/>
-    {name}
-    <br/>
-    <button style={removeButtonStyle} onClick={handleDelete}>remove</button>
+    <div style={blogStyle}>
+      {blog.title} {blog.author} <button onClick={controlShowDetails}>view</button>
+      {showDetails &&
+      <div>
+        {blog.id}
+        <br/>
+        {blog.url}
+        <br/>
+        likes {blog.likes} <button onClick={handleLikes}>like</button>
+        <br/>
+        {name}
+        <br/>
+        <button style={removeButtonStyle} onClick={handleDelete}>remove</button>
+      </div>
+      }
     </div>
-    }
-  </div>  
-)}
+  )}
 
 export default Blog
