@@ -12,6 +12,11 @@ const Blog = ({ blog, name, blogs,setBlogs }) => {
     borderWidth: 1,
     marginBottom: 5
   }
+  const removeButtonStyle = {
+    backgroundColor:'red',
+    color: 'white',
+    fontWeight: 'bold'
+  }
   //cambia el estado showDetails para mostrar los demas atributos de blog
   const controlShowDetails = () => {
     setShowDetails(!showDetails)
@@ -19,9 +24,7 @@ const Blog = ({ blog, name, blogs,setBlogs }) => {
 
   //maneja el boton de like
   const handleLikes = async () => {
-    console.log(blog.id);
     const likes = blog.likes + 1
-    console.log(likes);
     const updateBlog = {
       likes: blog.likes + 1
     }
@@ -34,6 +37,14 @@ const Blog = ({ blog, name, blogs,setBlogs }) => {
       return item
     })
     setBlogs(allBlogs)
+  }
+  //maneja el boton de remove
+  const handleDelete = async () => {
+    if(confirm("Do you want to delete the blog?")){
+      const response = await blogService.deleteBlog(blog.id)
+      const allBlogs = blogs.filter(item => item.id !== blog.id)
+      setBlogs(allBlogs)
+    }
   }
 
   return(
@@ -48,6 +59,8 @@ const Blog = ({ blog, name, blogs,setBlogs }) => {
     likes {blog.likes} <button onClick={handleLikes}>like</button>
     <br/>
     {name}
+    <br/>
+    <button style={removeButtonStyle} onClick={handleDelete}>remove</button>
     </div>
     }
   </div>  
