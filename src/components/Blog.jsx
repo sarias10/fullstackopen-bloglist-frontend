@@ -3,7 +3,7 @@ import blogService from '../services/blogs'
 import blogs from '../services/blogs'
 import { compareFn } from '../utils'
 
-const Blog = ({ blog, name, blogs,setBlogs }) => {
+const Blog = ({ blog, name, blogs, setBlogs }) => {
   const [showDetails, setShowDetails] =useState(false)
   const blogStyle = {
     paddingTop: 10,
@@ -40,7 +40,7 @@ const Blog = ({ blog, name, blogs,setBlogs }) => {
   }
   //maneja el boton de remove
   const handleDelete = async () => {
-    if(confirm("Do you want to delete the blog?")){
+    if(confirm('Do you want to delete the blog?')){
       const response = await blogService.deleteBlog(blog.id)
       const allBlogs = blogs.filter(item => item.id !== blog.id)
       setBlogs(allBlogs)
@@ -49,7 +49,7 @@ const Blog = ({ blog, name, blogs,setBlogs }) => {
 
   return(
     <div style={blogStyle}>
-      {blog.title} {blog.author} <button onClick={controlShowDetails}>view</button>
+      {blog.title} - {blog.author} <button onClick={controlShowDetails}>view</button>
       {showDetails &&
       <div>
         {blog.id}

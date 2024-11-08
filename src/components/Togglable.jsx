@@ -1,21 +1,22 @@
+import PropTypes from 'prop-types'
 import React, { useImperativeHandle, useState, forwardRef } from 'react'
 
 const Togglable = forwardRef((props, refs) => {//el componente esta envuelto en forwardRef, asi el componente puede acceder a la referencia que se le asigna
-    const [visible, setVisible] = useState(false)
-    
-    const hideWhenVisible = { display: visible ? 'none' : '' }
-    const showWhenVisible = { display: visible ? '': 'none' }
+  const [visible, setVisible] = useState(false)
 
-    //cada que se haga click cambia visible de true a false o de false a true
-    const toggleVisibility = () => {
-        setVisible(!visible)
+  const hideWhenVisible = { display: visible ? 'none' : '' }
+  const showWhenVisible = { display: visible ? '': 'none' }
+
+  //cada que se haga click cambia visible de true a false o de false a true
+  const toggleVisibility = () => {
+    setVisible(!visible)
+  }
+  //el componente usa este gancho para hacer que la funcion toggleVisibility este disponible fuera del componente
+  useImperativeHandle(refs, () => {
+    return {
+      toggleVisibility
     }
-    //el componente usa este gancho para hacer que la funcion toggleVisibility este disponible fuera del componente
-    useImperativeHandle(refs, () => {
-      return {
-        toggleVisibility
-      }
-    })
+  })
 
   return (
     <div>
@@ -30,6 +31,9 @@ const Togglable = forwardRef((props, refs) => {//el componente esta envuelto en 
   )
 })
 
+Togglable.propTypes = {
+  buttonLabel: PropTypes.string.isRequired
+}
 //se usa para que en las herramientas de depuracion aparezca Togglable y no ForwardRef
 Togglable.displayName = 'Togglable'
 
