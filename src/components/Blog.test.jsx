@@ -22,7 +22,7 @@ test('renders content', () => {
   expect(likesElement).toBeNull()
 })
 
-test('clicking button view for check likes and URL', async () => {
+test('click the view button once to display likes and URL', async () => {
   const blog = {
     title: 'Testeando que aparezca likes y url',
     author: 'Sergio',
