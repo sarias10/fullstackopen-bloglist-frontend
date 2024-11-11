@@ -52,13 +52,13 @@ const Blog = ({ blog, name, blogs, setBlogs }) => {
       {blog.title} - {blog.author} <button onClick={controlShowDetails}>view</button>
       {showDetails &&
       <div>
-        {blog.id}
+        <span>{blog.id}</span>
         <br/>
-        {blog.url}
+        <span>{blog.url}</span>
         <br/>
-        likes {blog.likes} <button onClick={handleLikes}>like</button>
+        <span>likes {blog.likes}</span> <button onClick={handleLikes}>like</button>
         <br/>
-        {name}
+        <span>{name}</span>
         <br/>
         <button style={removeButtonStyle} onClick={handleDelete}>remove</button>
       </div>
