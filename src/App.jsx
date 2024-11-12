@@ -115,7 +115,7 @@ const App = () => {
   }
 
   const showCreateBlogForm = () => (
-    <Togglable buttonLabel={'newNote'} ref={blogFormRef}>{/*se pasa blogFormRef como referencia*/}
+    <Togglable buttonLabel={'new blog'} ref={blogFormRef}>{/*se pasa blogFormRef como referencia*/}
       <BlogForm createNewBlog={handleCreateNewBlog}/>
     </Togglable>
   )

@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import Blog from './Blog'
 import { expect } from 'vitest'
+import BlogForm from './BlogForm'
 
 test('renders content', () => {
   const blog = {
@@ -42,7 +43,7 @@ test('click the view button once to display likes and URL', async () => {
   expect(url).toBeDefined()
 })
 
-test('click button likes twice ', async () => {
+test('click button likes twice', async () => {
   const blog = {
     title: 'Testeando que aparezca likes y url',
     author: 'Sergio',
@@ -61,6 +62,30 @@ test('click button likes twice ', async () => {
   await user.click(likeButton)
   await user.click(likeButton)
 
-  console.log('funcion simulada', mockHandler.mock.calls)
   expect(mockHandler.mock.calls).toHaveLength(2)
+})
+
+test('add new blog', async () => {
+  const createNewBlog = vi.fn()
+
+  render(<BlogForm createNewBlog={createNewBlog} />)
+
+  const titleInput = screen.getByPlaceholderText('write title here')
+  const authorInput = screen.getByPlaceholderText('write author here')
+  const urlInput = screen.getByPlaceholderText('write url here')
+
+  const sendButton = screen.getByText('create')
+
+
+  await userEvent.type(titleInput, 'testeando escribir titulo')
+  await userEvent.type(authorInput, 'testeando escribir author')
+  await userEvent.type(urlInput, 'testeando escribir url')
+
+  await userEvent.click(sendButton)
+
+  console.log(createNewBlog.mock.calls)
+  expect(createNewBlog.mock.calls).toHaveLength(1)
+  expect(createNewBlog.mock.calls[0][0].title).toBe('testeando escribir titulo')
+  expect(createNewBlog.mock.calls[0][0].author).toBe('testeando escribir author')
+  expect(createNewBlog.mock.calls[0][0].url).toBe('testeando escribir url')
 })
