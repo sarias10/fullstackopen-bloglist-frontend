@@ -3,7 +3,7 @@ import blogService from '../services/blogs'
 import blogs from '../services/blogs'
 import { compareFn } from '../utils'
 
-const Blog = ({ blog, name, blogs, setBlogs }) => {
+const Blog = ({ blog, name, blogs, setBlogs, updateBlog }) => {
   const [showDetails, setShowDetails] =useState(false)
   const blogStyle = {
     paddingTop: 10,
@@ -24,11 +24,10 @@ const Blog = ({ blog, name, blogs, setBlogs }) => {
 
   //maneja el boton de like
   const handleLikes = async () => {
-    const likes = blog.likes + 1
-    const updateBlog = {
+    const newBlog = {
       likes: blog.likes + 1
     }
-    const response = await blogService.updateBlog(blog.id, updateBlog)
+    const response = await updateBlog(blog.id, newBlog)
     //obtiene la lista de blogs como prop en el componente y actualiza los likes solo del blog con el mismo id
     const allBlogs = blogs.map(item => {
       if(item.id === blog.id){

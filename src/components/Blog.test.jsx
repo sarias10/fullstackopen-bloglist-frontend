@@ -41,3 +41,23 @@ test('click the view button once to display likes and URL', async () => {
   expect(likes).toBeDefined()
   expect(url).toBeDefined()
 })
+
+test('click the view button once to display likes and URL', async () => {
+  const blog = {
+    title: 'Testeando que aparezca likes y url',
+    author: 'Sergio',
+    url: 'https://hola.com/',
+    likes: 800
+  }
+  render(<Blog blog = {blog}/>)
+
+  const user = userEvent.setup()
+  const button = screen.getByText('view')
+  await user.click(button)
+
+  const likes = screen.getByText('likes 800')
+  const url = screen.getByText('https://hola.com/')
+
+  expect(likes).toBeDefined()
+  expect(url).toBeDefined()
+})
