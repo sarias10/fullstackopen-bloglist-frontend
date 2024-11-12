@@ -51,7 +51,7 @@ test('click button likes twice ', async () => {
   }
 
   const mockHandler = vi.fn()
-  render(<Blog blog = {blog} updateBlog={mockHandler}/>)
+  render(<Blog blog = {blog} handleLike={mockHandler}/>)
 
   const user = userEvent.setup()
   const button = screen.getByText('view')
@@ -61,6 +61,6 @@ test('click button likes twice ', async () => {
   await user.click(likeButton)
   await user.click(likeButton)
 
-  console.log('funcion simulada', mockHandler)
+  console.log('funcion simulada', mockHandler.mock.calls)
   expect(mockHandler.mock.calls).toHaveLength(2)
 })
