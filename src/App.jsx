@@ -98,6 +98,21 @@ const App = () => {
       console.error(error.message)
     }
   }
+  //maneja el boton de like de blog
+  const handleLike = async (blog) => {
+    const newBlogLikes = {
+      likes: blog.likes + 1
+    }
+    const response = await blogService.updateBlog(blog.id, newBlogLikes)
+    //obtiene la lista de blogs como prop en el componente y actualiza los likes solo del blog con el mismo id
+    const allBlogs = blogs.map(item => {
+      if(item.id === blog.id){
+        item.likes = response.data.likes
+      }
+      return item
+    })
+    setBlogs(allBlogs)
+  }
 
   const showCreateBlogForm = () => (
     <Togglable buttonLabel={'newNote'} ref={blogFormRef}>{/*se pasa blogFormRef como referencia*/}
@@ -136,7 +151,7 @@ const App = () => {
           <h2>blogs list created by {user.name}</h2>
           {blogs &&
           (blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} name={user.name} blogs={blogs} setBlogs={setBlogs} updateBlog={blogService.updateBlog}/>
+            <Blog key={blog.id} blog={blog} name={user.name} blogs={blogs} setBlogs={setBlogs} handleLike={() => handleLike(blog)}/>
           ))
           }
         </>

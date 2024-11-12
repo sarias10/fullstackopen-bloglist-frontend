@@ -3,7 +3,7 @@ import blogService from '../services/blogs'
 import blogs from '../services/blogs'
 import { compareFn } from '../utils'
 
-const Blog = ({ blog, name, blogs, setBlogs, updateBlog }) => {
+const Blog = ({ blog, name, blogs, setBlogs, handleLike }) => {
   const [showDetails, setShowDetails] =useState(false)
   const blogStyle = {
     paddingTop: 10,
@@ -22,21 +22,6 @@ const Blog = ({ blog, name, blogs, setBlogs, updateBlog }) => {
     setShowDetails(!showDetails)
   }
 
-  //maneja el boton de like
-  const handleLikes = async () => {
-    const newBlog = {
-      likes: blog.likes + 1
-    }
-    const response = await updateBlog(blog.id, newBlog)
-    //obtiene la lista de blogs como prop en el componente y actualiza los likes solo del blog con el mismo id
-    const allBlogs = blogs.map(item => {
-      if(item.id === blog.id){
-        item.likes = response.data.likes
-      }
-      return item
-    })
-    setBlogs(allBlogs)
-  }
   //maneja el boton de remove
   const handleDelete = async () => {
     if(confirm('Do you want to delete the blog?')){
@@ -48,14 +33,14 @@ const Blog = ({ blog, name, blogs, setBlogs, updateBlog }) => {
 
   return(
     <div style={blogStyle}>
-      {blog.title} - {blog.author} <button onClick={controlShowDetails}>view</button>
+      {blog.title} - {blog.author} <button className='viewButton' onClick={controlShowDetails}>view</button>
       {showDetails &&
       <div>
         <span>{blog.id}</span>
         <br/>
         <span>{blog.url}</span>
         <br/>
-        <span>likes {blog.likes}</span> <button onClick={handleLikes}>like</button>
+        <span>likes {blog.likes}</span> <button className='likeButton' onClick={handleLike}>like</button>
         <br/>
         <span>{name}</span>
         <br/>

@@ -8,7 +8,7 @@ const setToken = (newtoken) => {
 
 //token de kelly, solo para ejemplos
 const config2 = {
-  headers: { Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtlbGx5IiwiaWQiOiI2NmZlODJhYzRmNmM2YWQzZjhjZjhjYTIiLCJpYXQiOjE3Mjk1OTY4Mzd9.4ui0WrniPzAUkFWKCA9FgByUkduK1WgBwwyo0zyWyeU'}
+  headers: { Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImtlbGx5IiwiaWQiOiI2NmZlODJhYzRmNmM2YWQzZjhjZjhjYTIiLCJpYXQiOjE3Mjk1OTY4Mzd9.4ui0WrniPzAUkFWKCA9FgByUkduK1WgBwwyo0zyWyeU' }
 }
 
 const getAll = async () => {
@@ -24,14 +24,14 @@ const createBlog = async (newBlog) => {
   const config = {
     headers: { Authorization: token }
   }
-  
+
   const response = await axios.post(baseUrl, newBlog, config)
   return response
 }
 
 const updateBlog = async (id, blog) => {
   const config = {
-    headers: {Authorization: token}
+    headers: { Authorization: token }
   }
 
   const response = await axios.put(`${baseUrl}/${id}`,blog, config)
@@ -40,7 +40,7 @@ const updateBlog = async (id, blog) => {
 
 const deleteBlog = async (id) => {
   const config = {
-    headers: {Authorization: token}
+    headers: { Authorization: token }
   }
 
   const response = await axios.delete(`${baseUrl}/${id}`, config)
