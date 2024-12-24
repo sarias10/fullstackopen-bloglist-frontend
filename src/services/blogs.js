@@ -15,7 +15,7 @@ const getAll = async () => {
   const config = {
     headers: { Authorization: token }
   }
-
+  console.log('se empieza a ejecutar la petición')
   const response = await axios.get(baseUrl, config)
   return response.data
 }
@@ -24,9 +24,8 @@ const createBlog = async (newBlog) => {
   const config = {
     headers: { Authorization: token }
   }
-
   const response = await axios.post(baseUrl, newBlog, config)
-  return response
+  return response.data
 }
 
 const updateBlog = async (id, blog) => {
